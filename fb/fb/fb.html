@@ -1,0 +1,114 @@
+<?php
+include 'connect.php';
+
+class login extends connect
+{
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
+    public function login()
+    {
+        if ($this->db_found == true)
+        {
+            $s = "SELECT * FROM login";
+            $r = mysqli_query($this->db_found, $s);
+            $this->id = $_POST["t1"];
+            $this->pwd = $_POST["t2"];
+            $f = 0;
+            $k = 0;
+
+            while ($b = mysqli_fetch_assoc($r))
+            {
+                if($this->id==$b['id'] && $this->pwd==$b['pwd'])
+
+                {
+                    $f = 1;
+                    break;
+                }
+                else if ($b['id'] == $this->id)
+                {
+                    $k = 1;
+                }
+            }
+
+            if ($f == 1)
+            {
+                echo "Login Successful!";
+            }
+            else if ($k == 1)
+            {
+                echo "Wrong Password!";
+            }
+            else
+            {
+                echo "User Not Found!";
+            }
+        }
+        else
+        {
+            echo "Database connection failed.";
+        }
+    }
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST")
+{
+    $obj = new login();
+    $obj->login();
+}
+
+
+
+echo "<html lang="en">
+  <head>
+    <title>Facebook Login Page | CodingNepal</title>
+    <link rel="stylesheet" href="fb.css">
+  </head>
+  <body>
+    <div class="container flex">
+      <div class="facebook-page flex">
+        <div class="text">
+          <h1>facebook</h1>
+          <p>Connect with friends and Enjoy New Frirnds</p>
+          <p> around you on Facebook.</p>
+        </div>
+        <form name="f">
+        <input type="text" name="t1" placeholder="Email or phone number" required>
+        <input type="password" name="t2" placeholder="Password" required>
+        <div class="link">
+          <button type="button" class="login" onclick="a()">Login</button>
+          <a href="#" class="forgot">Forgot password?</a>
+        </div>
+        <hr>
+        <div class="button">
+          <a href="https://www.facebook.com/r.php?locale=en_GB&display=page">Create new account</a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function a() {
+      let id = document.f.t1.value;
+      let pwd = document.f.t2.value;
+
+      if (id === "12345") {
+        if (pwd === "12345") {
+          alert("Welcome");
+        } else {
+          alert("Password Sahi Dal");
+        }
+      } else {
+        alert("ID Sahi Dal");
+      }
+    }
+
+    function b() {
+      window.close();
+    }
+  </script>
+</body>
+</html>;"
+?>
